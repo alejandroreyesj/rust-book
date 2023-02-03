@@ -24,6 +24,18 @@ fn main() {
         area3(&rect2)
     );
 
+    println!(
+        "The area of the rectangle is {} square pixels. (Using methods)",
+        rect2.area()
+    );
+
+    let rect3 = Rectangle {
+        width: 20,
+        height: 30,
+    };
+
+    println!("Can rect2 hold rect3? {}", rect2.can_hold(&rect3));
+
     println!("Pretty print rect 2 using :#?: {rect2:#?}")
 }
 
@@ -31,6 +43,22 @@ fn main() {
 struct Rectangle {
     width: u32,
     height: u32,
+}
+
+impl Rectangle {
+    fn new(size: u32) -> Self {
+        Self {
+            width: size,
+            height: size,
+        }
+    }
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width > other.width && self.height > other.height
+    }
 }
 
 fn area(width: u32, height: u32) -> u32 {
