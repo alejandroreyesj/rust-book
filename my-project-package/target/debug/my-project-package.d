@@ -1,1 +1,0 @@
-/home/alejandro/Documents/rust_projects/rust-book/my-project-package/target/debug/my-project-package: /home/alejandro/Documents/rust_projects/rust-book/my-project-package/src/add.rs /home/alejandro/Documents/rust_projects/rust-book/my-project-package/src/main.rs
