@@ -1,4 +1,7 @@
+pub mod generics_part_2_traits;
+use generics_part_2_traits::{NewsArticle, Summary};
 fn main() {
+    // Generics Part 1
     let number_list = vec![34, 50, 25, 100, 65];
     let number_list2 = vec![102, 34, 6000, 89, 54, 2, 43, 8];
     let char_list = vec!['y', 'm', 'a', 'q'];
@@ -8,7 +11,26 @@ fn main() {
     println!("The result1 number is {result1}");
     println!("The result2 number is {result2}");
     println!("The largest char is {char_result}");
+    let article = NewsArticle::default();
+    println!("{}", article.summarize());
+
+    // Generics Part 3: Lifetimes;
+    let string1 = String::from("abcde");
+    {
+        let string2 = "xyz";
+        let result = longest(string1.as_str(), string2);
+        println!("The longest string is {result}");
+    }
 }
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+
+// Generics Part 1
 fn largest(list: &[i32]) -> &i32 {
     let mut largest = &list[0];
 
@@ -29,4 +51,16 @@ fn largest_generic<T: Ord + PartialOrd + Copy>(list: &[T]) -> &T {
         }
     }
     largest
+}
+
+// Liftimes on Structs
+struct ImportantExcerpt<'a> {
+    part: &'a str,
+}
+
+impl<'a> ImportantExcerpt<'a> {
+    fn announce_and_return_part<'b>(&self, announcement: &'b str) -> &'b str {
+        println!("Attention please: {announcement}");
+        announcement
+    }
 }
