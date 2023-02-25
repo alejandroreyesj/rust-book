@@ -1,4 +1,6 @@
 pub mod generics_part_2_traits;
+use std::fmt::Display;
+
 use generics_part_2_traits::{NewsArticle, Summary};
 fn main() {
     // Generics Part 1
@@ -62,5 +64,17 @@ impl<'a> ImportantExcerpt<'a> {
     fn announce_and_return_part<'b>(&self, announcement: &'b str) -> &'b str {
         println!("Attention please: {announcement}");
         announcement
+    }
+}
+
+fn longest_with_announcement<'a, T>(x: &'a str, y: &'a str, ann: T) -> &'a str
+where
+    T: Display,
+{
+    println!("Announcement! {ann}");
+    if x.len() > y.len() {
+        x
+    } else {
+        y
     }
 }
