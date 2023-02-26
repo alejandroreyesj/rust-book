@@ -1,3 +1,4 @@
+#![allow(unused_variables, dead_code)]
 fn main() {
     let penny = Coin::Penny;
     let nickel = Coin::Nickel;

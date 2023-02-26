@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 fn main() {
     let home = IpAddr {
         kind: IpAddrKind::V4,

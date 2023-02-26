@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 pub mod generics_part_2_traits;
 use std::fmt::Display;
 

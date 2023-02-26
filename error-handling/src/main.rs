@@ -1,6 +1,7 @@
-use std::fs::File;
-use std::io::{self, ErrorKind, Read};
+#![allow(dead_code, unused_variables)]
 use std::error::Error;
+use std::fs::{read_to_string, File};
+use std::io::{self, ErrorKind, Read};
 fn main() -> Result<(), Box<dyn Error>> {
     println!("Hello, world!");
     let greeting_file_result = File::open("greeting.txt");
@@ -9,10 +10,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         Err(error) => match error.kind() {
             ErrorKind::NotFound => match File::create("greeting.txt") {
                 Ok(fc) => fc,
-                Err(e) => panic!("Problem creating the file: {:?}", e),
+                Err(e) => panic!("Problem creating the file: {e:?}"),
             },
             other_error => {
-                panic!("Problem opening the file: {:?}", other_error);
+                panic!("Problem opening the file: {other_error:?}");
             }
         },
     };
@@ -45,6 +46,5 @@ fn read_username_from_file_3() -> Result<String, io::Error> {
     Ok(username)
 }
 fn read_username_from_file_4() -> Result<String, io::Error> {
-     fs::read_to_string("username.txt")
+    read_to_string("username.txt")
 }
-
