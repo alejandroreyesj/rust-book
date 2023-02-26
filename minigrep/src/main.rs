@@ -2,7 +2,7 @@ use std::env;
 use std::fs;
 use std::process;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() {
     let args: Vec<String> = env::args().collect();
     let config = Config::build(&args).unwrap_or_else(|err| {
         println!("Problem parsing arguments: {err}");
@@ -10,9 +10,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     });
     println!("Searching for {}", config.query);
     println!("In file {}", config.file_path);
-    let contents =
-        fs::read_to_string(config.file_path).expect("Should have been able to read the file");
-    println!("With contents: {contents}");
+    if let Err(e) = run(config) {
+        println!("Application error {e}");
+        process::exit(1)
+    };
+}
+
+fn run(config: Config) -> Result<(), Box<dyn std::error::Error>> {
+    let contents = fs::read_to_string(config.file_path)?;
+    println!("With contents: \n{contents}");
     Ok(())
 }
 
