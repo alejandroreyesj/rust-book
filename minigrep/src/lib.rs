@@ -1,21 +1,34 @@
+//! # My Crate
+//!
+//! `my_crate` is a collection of utilities to make performing certain
+//! calculations more convenient.
 use std::error::Error;
 use std::{env, fs};
 
-pub struct Config<'a> {
-    pub query: &'a str,
-    pub file_path: &'a str,
+pub struct Config {
+    pub query: String,
+    pub file_path: String,
     ignore_case: bool,
 }
 
-impl<'a> Config<'a> {
-    pub fn build(args: &'a [String]) -> Result<Self, &'static str> {
-        if args.len() < 3 {
-            return Err("Not enough arguments");
-        }
+impl Config {
+    pub fn build(mut args: impl Iterator<Item = String>) -> Result<Self, &'static str> {
+        args.next();
+
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't find a query string"),
+        };
+        let file_path = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't find a filepath"),
+        };
+
+        let ignore_case = env::var("IGNORE_CASE").is_ok();
         Ok(Self {
-            query: &args[1],
-            file_path: &args[2],
-            ignore_case: env::var("IGNORE_CASE").is_ok(),
+            query,
+            file_path,
+            ignore_case,
         })
     }
 }
@@ -23,9 +36,9 @@ impl<'a> Config<'a> {
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.file_path)?;
     let results = if config.ignore_case {
-        search_case_insensitive(config.query, &contents)
+        search_case_insensitive(&config.query, &contents)
     } else {
-        search(config.query, &contents)
+        search(&config.query, &contents)
     };
     results.into_iter().for_each(|line| {
         println!("{line}");
@@ -33,6 +46,18 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+/// Search for a query in a String
+///
+/// # Examples
+/// ```
+///
+///        let query = "duct";
+///        let contents = "\
+///        Rust:
+///        safe, fast, productive.
+///        Pick three.";
+///        assert_eq!(vec!["safe, fast, productive."], minigrep::search(query, contents));
+/// ```
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     contents
         .lines()
