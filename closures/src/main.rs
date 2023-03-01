@@ -1,3 +1,5 @@
+use std::thread;
+
 fn main() {
     let store = Inventory {
         shirts: vec![ShirtColor::Blue, ShirtColor::Red, ShirtColor::Blue],
@@ -27,8 +29,38 @@ fn main() {
 
     borrows_mutably();
     println!("After calling closure: {list:?}");
-}
 
+    thread::spawn(move || println!("From thread: {list:?}"))
+        .join()
+        .unwrap();
+
+    let mut list = [
+        Rectangle {
+            width: 10,
+            height: 1,
+        },
+        Rectangle {
+            width: 3,
+            height: 5,
+        },
+        Rectangle {
+            width: 7,
+            height: 12,
+        },
+    ];
+
+    let mut num_sort_operations = 0;
+    list.sort_by_key(|r| {
+        num_sort_operations += 1;
+        r.width
+    });
+    println!("{list:#?}, sorted in {num_sort_operations} operations");
+}
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
 #[derive(Debug, PartialEq, Clone, Copy)]
 enum ShirtColor {
     Red,
