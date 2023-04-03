@@ -1,8 +1,6 @@
-fn main() {
-    println!("Hello, world!");
-    let y = i_vec!(1, 2, 3);
-    println!("{y:?}")
-}
+
+
+crate::
 
 #[macro_export]
 macro_rules! i_vec {
@@ -17,3 +15,14 @@ macro_rules! i_vec {
 
     };
 }
+
+fn main() {
+    println!("Hello, world!");
+    let y = i_vec!(1, 2, 3);
+    println!("{y:?}")
+    Hello
+    
+}
+
+
+
